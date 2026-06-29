@@ -56,11 +56,11 @@ proven system for any small business.
 
 ![Quote & invoice generator](docs/screenshots/4-cotizador.png)
 
-| Unified panel | Clients & Orders |
+| Clients & Orders | Daily accounts |
 |:--:|:--:|
-| ![Unified panel](docs/screenshots/2-launcher.png) | ![Clients & Orders](docs/screenshots/3-clientes.png) |
-| **Daily accounts** | **Login** |
-| ![Daily accounts](docs/screenshots/5-cuentas.png) | ![Login](docs/screenshots/1-login.png) |
+| ![Clients & Orders](docs/screenshots/3-clientes.png) | ![Daily accounts](docs/screenshots/5-cuentas.png) |
+| **Technical visits** | **Secure login** |
+| ![Technical visits](docs/screenshots/6-visitas.png) | ![Secure login](docs/screenshots/1-login.png) |
 
 ## Architecture
 
