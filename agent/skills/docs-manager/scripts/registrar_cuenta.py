@@ -213,7 +213,7 @@ def main():
         elif accion == 'resumen_mes':
             result = resumen_mes(data.get('mes'), data.get('anio'))
         else:
-            result = {'error': f'AcciA3n desconocida: "{accion}". Opciones: registrar, consultar, consultar_rango, listar_todo, resumen_mes'}
+            result = {'error': f'Acción desconocida: "{accion}". Opciones: registrar, consultar, consultar_rango, listar_todo, resumen_mes'}
 
         print(json.dumps(result, ensure_ascii=False, indent=2))
 

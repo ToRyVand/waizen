@@ -2,7 +2,7 @@
 """
 Seguimiento automatico de cotizaciones {{BUSINESS_NAME}} (Fase 2).
 Recorre clientes-db.json: pedidos en estado 'cotizado' con contacto previo,
-sin respuesta hace >= 4 dias -> envia seguimiento por WhatsApp via ARK API /seguimiento.
+sin respuesta hace >= 4 dias -> envia seguimiento por WhatsApp via API /seguimiento.
 Frenos: max 3 seguimientos por pedido, max 5 envios por corrida,
 salta convertida/no_interesado, salta leads sin fecha o viejos sin contacto previo.
 Uso: python seguimiento_auto.py [--dry-run]

@@ -581,7 +581,7 @@ async function loadData() {
     if (!Array.isArray(_data.clientes)) _data.clientes = [];
   } catch(e) {
     _data = { clientes: [] };
-    toast('ARK API offline', false);
+    toast('API offline', false);
   }
   renderList();
   renderOrders();
@@ -1226,7 +1226,7 @@ async function programarInstalacion(ci, pi) {
     await persist();
     renderOrders(); if (_sel === ci) loadClientDetail(ci);
     toast('🛠 Instalación programada — ajustá fecha en Visitas Técnicas ✓');
-  } catch (e) { toast('Error al programar (¿ARK API?)', false); }
+  } catch (e) { toast('Error al programar (¿API?)', false); }
 }
 
 async function sendWhatsapp(ci, pi, kind) {
@@ -1257,7 +1257,7 @@ async function sendWhatsapp(ci, pi, kind) {
     await persist();
     renderOrders(); if (_sel === ci) loadClientDetail(ci);
     toast(cfg.okToast + (data.adjunto ? ' (recibo adjunto)' : (cfg.adjuntar ? ' (sin recibo en sistema)' : '')));
-  } catch (e) { toast('Error de conexión con ARK API', false); }
+  } catch (e) { toast('Error de conexión con API', false); }
 }
 
 async function setSeguiEstado(ci, pi, estado) {
@@ -1483,7 +1483,7 @@ async function previewDoc(descripcion) {
       container.innerHTML = `<iframe src="${url}" title="${esc(descripcion)}"></iframe>`;
     }
   } catch(e) {
-    container.innerHTML = '<div style="color:var(--red);font-size:13px;padding:40px;text-align:center">Error al cargar el documento.<br><small>Verificá que ARK API esté corriendo.</small></div>';
+    container.innerHTML = '<div style="color:var(--red);font-size:13px;padding:40px;text-align:center">Error al cargar el documento.<br><small>Verificá que API esté corriendo.</small></div>';
   }
 }
 

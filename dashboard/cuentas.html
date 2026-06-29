@@ -371,7 +371,7 @@
 <!-- �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? VISTA DA?A �?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�?�? -->
 <div class="view active" id="view-dia">
 
-  <!-- navegaciA3n de fecha -->
+  <!-- navegación de fecha -->
   <div class="date-row">
     <button class="day-nav-btn" onclick="navDay(-1)">&#8592;</button>
     <input type="date" id="day-input" onchange="loadDay()">
@@ -409,7 +409,7 @@
       </div>
       <div class="items-list" id="list-ingresos"></div>
       <div class="add-form">
-        <input class="desc" type="text" id="ing-desc" placeholder="DescripciA3n..."
+        <input class="desc" type="text" id="ing-desc" placeholder="Descripción..."
                onkeydown="if(event.key==='Enter')addItem('ing')">
         <input class="val"  type="text" id="ing-val"  placeholder="Valor"
                onkeydown="if(event.key==='Enter')addItem('ing')">
@@ -429,7 +429,7 @@
       </div>
       <div class="items-list" id="list-gastos"></div>
       <div class="add-form">
-        <input class="desc" type="text" id="gas-desc" placeholder="DescripciA3n..."
+        <input class="desc" type="text" id="gas-desc" placeholder="Descripción..."
                onkeydown="if(event.key==='Enter')addItem('gas')">
         <input class="val"  type="text" id="gas-val"  placeholder="Valor"
                onkeydown="if(event.key==='Enter')addItem('gas')">
@@ -510,7 +510,7 @@
       <canvas id="chart-m-bar" height="160"></canvas>
     </div>
     <div class="chart-card">
-      <h3>DistribuciA3n del mes</h3>
+      <h3>Distribución del mes</h3>
       <canvas id="chart-m-pie" height="260"></canvas>
     </div>
     <div class="chart-card">
@@ -569,7 +569,7 @@
       <canvas id="chart-y-bar" height="160"></canvas>
     </div>
     <div class="chart-card">
-      <h3>ProporciA3n anual</h3>
+      <h3>Proporción anual</h3>
       <canvas id="chart-y-pie" height="260"></canvas>
     </div>
     <div class="chart-card">
@@ -597,7 +597,7 @@ async function _loadAllData() {
     else _allData = {};
   } catch(e) {
     _allData = {};
-    console.warn('ARK API offline. Iniciando con datos vacA-os.');
+    console.warn('API offline. Iniciando con datos vacA-os.');
   }
 }
 
@@ -749,7 +749,7 @@ function addItem(type) {
   const valE  = document.getElementById(type + '-val');
   const desc  = descE.value.trim();
   const valor = parseVal(valE.value);
-  if (!desc)  { descE.focus(); showToast('EscribA- una descripciA3n', false); return; }
+  if (!desc)  { descE.focus(); showToast('EscribA- una descripción', false); return; }
   if (!valor) { valE.focus();  showToast('IngresA� un valor', false); return; }
   dayData[t].push({ desc, valor, por: 'ToRi', hora: new Date().toTimeString().slice(0, 5) });
   descE.value = '';

@@ -70,7 +70,7 @@ Primer contacto, variar entre:
 - "Cotizacion valida por 3 dias habiles. Precios confirmados por el equipo." (al final de cotizacion solo, no como frase suelta)
 
 # RESPUESTAS AUTOMATICAS
-- Cuenta bancaria (si piden como pagar): envia /home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/assets\CUENTA ARK DECO.jpg
+- Cuenta bancaria (si piden como pagar): envia /home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/assets\CUENTA.jpg
 - RUT: envia /home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/assets\DOCS {{BUSINESS_LEGAL}}\RUT {{BUSINESS_LEGAL}}.pdf
 - Admin Hector (+573134003693) o Juan (+57314192331): pueden pedir explorar cualquier carpeta.
 

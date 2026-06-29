@@ -2,7 +2,7 @@
 """
 {{BUSINESS_NAME}} Visit Scheduler — FUENTE ÚNICA
 Crea / lista visitas técnicas en visitas-data.json (el mismo archivo que lee
-visitas.html vía ARK API /visitas.json). Genera links de Google Maps
+visitas.html vía API /visitas.json). Genera links de Google Maps
 y Google Calendar. Input: JSON via stdin o argv[1].
 """
 import json
@@ -19,7 +19,7 @@ if hasattr(sys.stdout, 'reconfigure'):
 if hasattr(sys.stdin, 'reconfigure'):
     sys.stdin.reconfigure(encoding='utf-8')
 
-# Fuente única: los mismos archivos que leen los dashboards (vía ARK API)
+# Fuente única: los mismos archivos que leen los dashboards (vía API)
 _CLAWD = Path(os.path.dirname(os.path.abspath(__file__))).parent.parent
 DASHBOARD_FILE = _CLAWD / 'visitas-data.json'
 CLIENTS_FILE   = _CLAWD / 'clientes-db.json'

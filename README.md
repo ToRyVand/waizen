@@ -48,6 +48,20 @@ proven system for any small business.
 | 🔒 **Auth & panel** | Token-based login, single launcher, nav between tools. |
 | 🖨️ **PDF engine** | Client-side (jsPDF + html2canvas) and **server-side headless-Chrome** generation for batch / regeneration. |
 
+## 📸 Screenshots
+
+> Rendered with sample data on a demo business (*"Cristal Demo"*).
+
+**Quote / invoice generator** — paste a WhatsApp order → AI extracts the line items → clean landscape PDF:
+
+![Quote & invoice generator](docs/screenshots/4-cotizador.png)
+
+| Unified panel | Clients & Orders |
+|:--:|:--:|
+| ![Unified panel](docs/screenshots/2-launcher.png) | ![Clients & Orders](docs/screenshots/3-clientes.png) |
+| **Daily accounts** | **Login** |
+| ![Daily accounts](docs/screenshots/5-cuentas.png) | ![Login](docs/screenshots/1-login.png) |
+
 ## Architecture
 
 ```

@@ -382,15 +382,14 @@
       <div class="section-title">1 · Pegar pedido de WhatsApp</div>
       <label>Mensaje recibido</label>
       <textarea id="whatsapp-input" placeholder="Ej:
-Cliente: Roy Yacumal
-Dirección: Cra 8 26A-826 Torre 7 Apt 604
-Teléfono: 323 233 71 22
+Cliente: Juan Pérez
+Dirección: Calle 10 # 20-30
+Teléfono: 300 123 4567
 
-2 puerta cocina corte 98.000 c/u
-1 espejo 2.14x0.86 biselado + touch 660.000
-1 espejo 1.10x0.100 biselado + touch 370.000
+2 producto A 98.000 c/u
+1 producto B grande 660.000
 
-Abono: 1.000.000"></textarea>
+Abono: 500.000"></textarea>
       <button class="btn btn-primary" id="btn-extract" onclick="extractFromWhatsapp()">
         <span id="btn-icon">✨</span> Generar Factura con IA
       </button>
@@ -1381,7 +1380,7 @@ async function saveToSystem() {
     incrementDocNum();
     setSaveStatus(`Guardado: ${docType === 'recibo' ? 'Recibo' : 'Cotizacion'} #${docNum} - ${clienteNombre} - ${statusExtra}`, true);
   } catch(e) {
-    setSaveStatus('Error: ARK API no disponible (/api)', false);
+    setSaveStatus('Error: API no disponible (/api)', false);
   }
 }
 

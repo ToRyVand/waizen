@@ -30,7 +30,7 @@ python3 "/home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/media-reader/scripts/read_me
 ## Registro de ingresos y gastos (cuentas diarias)
 
 Ver skill `docs-manager\SKILL.md` para registrar entradas.
-Los datos se guardan en `/home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/cuentas-data.json` via ARK API (localhost:18788).
+Los datos se guardan en `/home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/cuentas-data.json` via API (localhost:18788).
 La UI de cuentas es LOCAL: `file:///C:/Users/USER/clawd/cuentas.html`
 Los registros de {{AGENT_NAME}} aparecen con badge "{{AGENT_NAME}}".
 

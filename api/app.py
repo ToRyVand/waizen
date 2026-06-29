@@ -610,7 +610,7 @@ class ARKHandler(BaseHTTPRequestHandler):
 
 if __name__ == '__main__':
     server = ThreadingHTTPServer(('0.0.0.0', PORT), ARKHandler)  # loopback + Tailscale (firewall restringe el resto)
-    print(f'ARK API listening on http://127.0.0.1:{PORT}', flush=True)
+    print(f'API listening on http://127.0.0.1:{PORT}', flush=True)
     try:
         server.serve_forever()
     except KeyboardInterrupt:

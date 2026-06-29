@@ -19,9 +19,9 @@ function targetFolder(estado){
 }
 function safeName(s){ return (s||'DOCUMENTO').toUpperCase().replace(/[<>:"/\\|?*]/g,' ').replace(/\s+/g,' ').trim() || 'DOCUMENTO'; }
 
-const MISSING = ['ANDRES PEREZ','ARGOTY ARQUITECTURA, ESTEBAN CANO','Carolina Forero','DAVID PADILLA',
- 'DIME CLINICA NEUROCARDIOVASCULAR S.A.','Daniela Garcia','EINER AYALA','ESTEFANIA HOME','FREDY CANO',
- 'ISORA OROBIO CHAVEZ','MARIA ANGELA CEBALLOS','MIGUEL MATURANA','SEBASTIÁN CRUZ','STEPHANY','Yonny Alberto Muñoz'];
+// Optional batch list of client names to (re)generate. Usually you pass a single
+// client name as an argument: `node generate_pdfs.js "CLIENT NAME"`.
+const MISSING = [];
 
 const filter = process.argv[2] || null; // optional: only this client (test)
 

@@ -203,7 +203,7 @@
   <!-- HEADER -->
   <header class="app-header">
     <div class="brand-dot"></div>
-    <div class="brand-text">ARK <span>GLASS</span></div>
+    <div class="brand-text">{{BUSINESS_NAME}}</div>
     <div class="brand-sub">Panel de Gestión · Dashboard</div>
   </header>
 
@@ -235,7 +235,7 @@
   <!-- STATUS BAR -->
   <div class="status-bar" id="statusBar">
     <span class="status-dot online" id="apiStatusDot"></span>
-    <span id="apiStatusText">ARK API verificando...</span>
+    <span id="apiStatusText">API verificando...</span>
     <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px" id="versionText">v1.0</span>
   </div>
 </div>
@@ -288,14 +288,14 @@
       const r = await fetch('/api/clientes.json', { method: 'HEAD', signal: AbortSignal.timeout(5000) });
       if (r.ok) {
         dot.className = 'status-dot online';
-        txt.textContent = 'ARK API · Online';
+        txt.textContent = 'API · Online';
       } else {
         dot.className = 'status-dot offline';
-        txt.textContent = 'ARK API · Error ' + r.status;
+        txt.textContent = 'API · Error ' + r.status;
       }
     } catch {
       dot.className = 'status-dot offline';
-      txt.textContent = 'ARK API · Sin conexión';
+      txt.textContent = 'API · Sin conexión';
     }
   }
 

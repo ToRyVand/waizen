@@ -19,7 +19,8 @@ data/*.json
 !data/samples/**
 
 # === Generated documents (receipts / quotes / scans) ===
-docs/
+# (docs/ holds the project documentation + screenshots — keep it tracked)
+generated/
 *.pdf
 
 # === Runtime / backups / editor ===

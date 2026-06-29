@@ -482,7 +482,7 @@ async function confirmarWhatsapp(id) {
     v.confirmacion_wsp.push(new Date().toISOString());
     saveData();
     showToast('Confirmación enviada por WhatsApp ✓');
-  } catch (e) { showToast('Error de conexión con ARK API', false); }
+  } catch (e) { showToast('Error de conexión con API', false); }
 }
 
 function setTecnico(id, val) {
