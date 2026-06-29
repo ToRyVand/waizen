@@ -1,0 +1,33 @@
+# WAIZEN edge proxy
+# Stockie — HTTPS automático con Let's Encrypt para el FQDN del VPS.
+vps-04263c22.vps.ovh.ca {
+	reverse_proxy stockie:8000
+}
+
+# {{BUSINESS_NAME}} Dashboard
+http://{{HOST}} {
+	# API → backend Python. ark_api se auto-protege (cookie de sesión);
+	# /login, /logout, /auth/check son públicos; localhost (cron) exento.
+	handle_path /api/* {
+		reverse_proxy 172.18.0.1:18788
+	}
+
+	# Página de login: pública (sin auth, para no hacer loop).
+	handle /login.html {
+		header Cache-Control "no-store"
+		root * /srv/{{WHATSAPP_ACCOUNT}}-dashboard
+		file_server
+	}
+
+	# Resto del panel: requiere sesión válida (forward_auth → ark_api /auth/check).
+	# HTML siempre fresco (no-store); las libs .js quedan cacheables (ETag).
+	handle {
+		forward_auth 172.18.0.1:18788 {
+			uri /auth/check
+		}
+		@html path *.html /
+		header @html Cache-Control "no-store"
+		root * /srv/{{WHATSAPP_ACCOUNT}}-dashboard
+		file_server
+	}
+}

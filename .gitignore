@@ -1,0 +1,31 @@
+# === Secrets — NEVER commit ===
+.env
+.auth_hash
+.auth_secret
+config.json
+*.key
+*.pem
+credentials/
+
+# === Dependencies ===
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+
+# === Real business data (only data/samples/ is tracked) ===
+data/*.json
+!data/samples/
+!data/samples/**
+
+# === Generated documents (receipts / quotes / scans) ===
+docs/
+*.pdf
+
+# === Runtime / backups / editor ===
+*.log
+*.bak
+*.bak-*
+*.pre-*
+*~
+.DS_Store

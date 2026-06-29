@@ -1,0 +1,39 @@
+{
+  "_comment": "Copy this file to config.json and fill in your business details. config.json is gitignored.",
+
+  "business": {
+    "name": "Tu Empresa S.A.S.",
+    "tagline": "Tu rubro o eslogan",
+    "address": "Calle 00 # 00-00, Tu Ciudad",
+    "phones": ["300 000 0000", "310 000 0000"],
+    "emails": ["info@tuempresa.com", "ventas@tuempresa.com"],
+    "website": "tuempresa.com",
+    "logo": "assets/business-logo.png",
+    "card_image": "assets/business-card.jpg",
+    "bank": {
+      "name": "Tu Banco",
+      "account_type": "Cuenta de ahorros",
+      "account_number": "000-000000-00",
+      "holder": "TU EMPRESA S.A.S.",
+      "nit": "000000000-0"
+    },
+    "signature_name": "Nombre del Firmante"
+  },
+
+  "panel": {
+    "product_name": "Waizen",
+    "title": "Waizen — Panel de Gestión",
+    "theme_color": "#00b8b0",
+    "logo": "assets/logo.png"
+  },
+
+  "agent": {
+    "display_name": "Tu Asistente",
+    "industry": "tu rubro (ej: vidrios y aluminio)",
+    "city": "Tu Ciudad",
+    "whatsapp_account": "mybiz"
+  },
+
+  "admins": ["57300XXXXXXX"],
+  "contact_for_commercial": "tu-email@dominio.com"
+}

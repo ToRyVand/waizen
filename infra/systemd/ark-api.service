@@ -1,0 +1,12 @@
+[Unit]
+Description={{BUSINESS_NAME}} API (dashboards + data)
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}/ark_api.py
+WorkingDirectory=/home/ubuntu/clientes/{{WHATSAPP_ACCOUNT}}
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=default.target

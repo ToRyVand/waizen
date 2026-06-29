@@ -1,0 +1,633 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BUSINESS_NAME}} — Visitas Técnicas</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --teal:       #00b8b0;
+    --teal-dark:  #008a84;
+    --teal-glow:  rgba(0,184,176,0.15);
+    --green:      #22c55e;
+    --green-dim:  rgba(34,197,94,0.15);
+    --yellow:     #f59e0b;
+    --yellow-dim: rgba(245,158,11,0.15);
+    --red:        #ef4444;
+    --red-dim:    rgba(239,68,68,0.15);
+    --purple:     #a855f7;
+    --purple-dim: rgba(168,85,247,0.15);
+    --white:      #ffffff;
+    --muted:      #94a3b8;
+    --bg:         #0f1623;
+    --panel:      #161f30;
+    --border:     #2a3550;
+    --surface:    #0d1520;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); min-height: 100vh; color: var(--white); }
+
+  /* HEADER */
+  .app-header {
+    background: linear-gradient(135deg, #0f1623 0%, #1a2744 100%);
+    border-bottom: 2px solid var(--teal);
+    padding: 18px 32px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .brand-dot { width:10px;height:10px;background:var(--teal);border-radius:50%;animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.5;transform:scale(1.3)} }
+  .app-header h1 { font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--white);letter-spacing:2px; }
+  .app-header span { font-size:13px;color:var(--teal);font-weight:500;margin-left:8px; }
+
+  /* TABS */
+  .tabs { display:flex;background:#0d1520;border-bottom:1px solid var(--border); }
+  .tab-btn {
+    flex:0 0 160px;padding:14px 0;background:none;border:none;
+    border-bottom:3px solid transparent;color:var(--muted);
+    font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;
+    letter-spacing:1px;text-transform:uppercase;cursor:pointer;transition:all .2s;
+  }
+  .tab-btn:hover { color:var(--teal); }
+  .tab-btn.active { color:var(--teal);border-bottom-color:var(--teal);background:rgba(0,184,176,0.05); }
+
+  .view { display:none;padding:28px 32px; }
+  .view.active { display:block; }
+
+  /* UTILITIES */
+  .section-title { font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--teal);margin-bottom:12px; }
+  .card { background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:20px; }
+  .card-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:14px; }
+  .btn { padding:9px 16px;border-radius:8px;border:none;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap; }
+  .btn-teal   { background:var(--teal);color:#0f1623; }
+  .btn-teal:hover { background:var(--teal-dark); }
+  .btn-outline { background:transparent;border:1px solid var(--border);color:var(--muted); }
+  .btn-outline:hover { border-color:var(--teal);color:var(--teal); }
+  .btn-sm { padding:5px 12px;font-size:12px; }
+
+  /* ESTADO BADGES */
+  .badge { display:inline-block;font-size:10px;padding:3px 10px;border-radius:20px;font-weight:700;text-transform:uppercase;letter-spacing:.5px; }
+  .badge-pendiente  { background:var(--yellow-dim);color:var(--yellow);border:1px solid rgba(245,158,11,.3); }
+  .badge-confirmada { background:var(--green-dim);color:var(--green);border:1px solid rgba(34,197,94,.3); }
+  .badge-completada { background:var(--teal-glow);color:var(--teal);border:1px solid rgba(0,184,176,.3); }
+  .badge-cancelada  { background:var(--red-dim);color:var(--red);border:1px solid rgba(239,68,68,.3); }
+  .badge-tipo-visita      { background:var(--teal-glow);color:var(--teal);border:1px solid rgba(0,184,176,.3); }
+  .badge-tipo-instalacion { background:var(--purple-dim);color:var(--purple);border:1px solid rgba(168,85,247,.3); }
+  .visita-card.instalacion { border-left:3px solid var(--purple); }
+  .card-link { font-size:12px;color:var(--purple);text-decoration:none;display:inline-flex;align-items:center;gap:4px; }
+  .card-link:hover { text-decoration:underline; }
+  .tecnico-sel { background:var(--surface);border:1px solid var(--border);border-radius:6px;color:var(--muted);font-size:12px;padding:3px 6px;font-family:'DM Sans',sans-serif; }
+
+  /* STATS ROW */
+  .stats-row { display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px; }
+  .stat-card { background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px 20px; }
+  .stat-card .stat-label { font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px; }
+  .stat-card .stat-value { font-family:'DM Mono',monospace;font-size:28px;font-weight:700; }
+  .stat-card .stat-value.yellow { color:var(--yellow); }
+  .stat-card .stat-value.green  { color:var(--green); }
+  .stat-card .stat-value.teal   { color:var(--teal); }
+  .stat-card .stat-value.red    { color:var(--red); }
+
+  /* VISITAS LIST */
+  .visitas-list { display:flex;flex-direction:column;gap:12px; }
+  .visita-card {
+    background:var(--panel);border:1px solid var(--border);border-radius:12px;
+    padding:16px 20px;display:grid;
+    grid-template-columns:auto 1fr auto;gap:16px;align-items:start;
+    transition:border-color .2s;
+  }
+  .visita-card:hover { border-color:rgba(0,184,176,.4); }
+  .visita-card.pendiente  { border-left:3px solid var(--yellow); }
+  .visita-card.confirmada { border-left:3px solid var(--green); }
+  .visita-card.completada { border-left:3px solid var(--teal); }
+  .visita-card.cancelada  { border-left:3px solid var(--red);opacity:.6; }
+
+  .visita-fecha {
+    text-align:center;background:var(--surface);border-radius:10px;
+    padding:10px 14px;min-width:64px;
+  }
+  .visita-fecha .v-dia  { font-family:'DM Mono',monospace;font-size:24px;font-weight:700;color:var(--teal);line-height:1; }
+  .visita-fecha .v-mes  { font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:4px; }
+  .visita-fecha .v-hora { font-size:12px;font-family:'DM Mono',monospace;color:var(--white);margin-top:6px; }
+
+  .visita-info .v-cliente { font-size:15px;font-weight:600;margin-bottom:4px; }
+  .visita-info .v-dir  { font-size:13px;color:var(--muted);margin-bottom:8px; }
+  .visita-info .v-notas { font-size:12px;color:#64748b;font-style:italic;margin-bottom:8px; }
+  .visita-info .v-meta { display:flex;gap:10px;align-items:center;flex-wrap:wrap; }
+
+  .visita-actions { display:flex;flex-direction:column;gap:6px;min-width:120px; }
+
+  .maps-link { font-size:12px;color:var(--teal);text-decoration:none;display:inline-flex;align-items:center;gap:4px; }
+  .maps-link:hover { color:var(--teal-dark); }
+
+  /* FORM */
+  .form-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px; }
+  .form-group { display:flex;flex-direction:column;gap:6px; }
+  .form-group label { font-size:12px;color:var(--teal);font-weight:600;letter-spacing:.5px;text-transform:uppercase; }
+  .form-group input, .form-group textarea, .form-group select {
+    background:var(--surface);border:1px solid var(--border);border-radius:8px;
+    color:var(--white);font-family:'DM Sans',sans-serif;font-size:13px;
+    padding:10px 12px;outline:none;transition:border-color .2s;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color:var(--teal); }
+  .form-group textarea { resize:vertical;min-height:70px; }
+  .form-full { grid-column:span 2; }
+
+  /* CALENDAR */
+  .cal-header { display:flex;align-items:center;justify-content:space-between;margin-bottom:16px; }
+  .cal-nav { background:var(--panel);border:1px solid var(--border);border-radius:8px;color:var(--teal);font-size:16px;padding:8px 14px;cursor:pointer;transition:all .2s; }
+  .cal-nav:hover { background:var(--teal-glow);border-color:var(--teal); }
+  .cal-title { font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px; }
+  .cal-grid { display:grid;grid-template-columns:repeat(7,1fr);gap:4px; }
+  .cal-dow { text-align:center;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;padding:8px 0;letter-spacing:1px; }
+  .cal-day {
+    min-height:80px;background:var(--surface);border:1px solid #1e2d45;
+    border-radius:8px;padding:8px;cursor:pointer;transition:all .2s;position:relative;
+  }
+  .cal-day:hover { border-color:rgba(0,184,176,.4); }
+  .cal-day.today { border-color:var(--teal); }
+  .cal-day.other-month { opacity:.3; }
+  .cal-day.has-visits { border-color:rgba(0,184,176,.3); }
+  .cal-day-num { font-size:13px;font-weight:600;margin-bottom:4px; }
+  .cal-day.today .cal-day-num { color:var(--teal); }
+  .cal-dot { width:6px;height:6px;border-radius:50%;display:inline-block;margin:1px; }
+  .cal-dot.pendiente  { background:var(--yellow); }
+  .cal-dot.confirmada { background:var(--green); }
+  .cal-dot.completada { background:var(--teal); }
+  .cal-dot.cancelada  { background:var(--red); }
+
+  /* TOAST */
+  .toast { position:fixed;bottom:24px;right:24px;background:var(--teal);color:#0f1623;font-weight:700;font-size:13px;padding:12px 20px;border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.4);transform:translateY(100px);opacity:0;transition:all .3s ease;z-index:999; }
+  .toast.show { transform:translateY(0);opacity:1; }
+
+  .filter-row { display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap; }
+  .filter-btn { padding:6px 16px;border-radius:20px;border:1px solid var(--border);background:none;color:var(--muted);font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:.5px; }
+  .filter-btn:hover, .filter-btn.active { border-color:var(--teal);color:var(--teal);background:var(--teal-glow); }
+
+  .empty-note { text-align:center;color:#475569;padding:40px 20px;font-size:14px; }
+
+  @media (max-width:900px) {
+    .stats-row { grid-template-columns:1fr 1fr; }
+    .form-grid { grid-template-columns:1fr; }
+    .form-full { grid-column:span 1; }
+    .visita-card { grid-template-columns:1fr; }
+    .view { padding:16px; }
+  }
+</style>
+</head>
+<body>
+<nav class="ark-topnav">
+  <a href="index.html" class="ark-nav-brand">◉ {{BUSINESS_NAME}}</a>
+  <div class="ark-nav-links">
+    <a href="clientes.html">📋 Clientes &amp; Órdenes</a>
+    <a href="facturas.html">🧾 Facturas</a>
+    <a href="cuentas.html">💳 Cuentas</a>
+    <a href="visitas.html">📅 Visitas</a>
+  </div>
+<a href="#" class="ark-nav-logout" onclick="fetch('/api/logout',{method:'POST'}).then(function(){location.href='/login.html'});return false;" style="margin-left:auto;color:#94a3b8;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:7px">🚪 Salir</a>
+</nav>
+<style>
+.ark-topnav{position:sticky;top:0;z-index:99999;display:flex;align-items:center;gap:18px;background:#0b1220;border-bottom:1px solid #00b8b0;padding:8px 18px;font-family:'DM Sans',sans-serif;flex-wrap:wrap}
+.ark-nav-brand{color:#00b8b0;font-weight:700;text-decoration:none;font-size:15px;letter-spacing:1px;white-space:nowrap}
+.ark-nav-links{display:flex;gap:6px;flex-wrap:wrap}
+.ark-nav-links a{color:#cbd5e1;text-decoration:none;font-size:13px;padding:5px 11px;border-radius:7px;transition:.15s;white-space:nowrap}
+.ark-nav-links a:hover{background:#16233a;color:#fff}
+.ark-nav-links a.active{background:#00b8b0;color:#04141a;font-weight:600}
+</style>
+<script>(function(){var p=location.pathname.split('/').pop()||'index.html';document.querySelectorAll('.ark-nav-links a').forEach(function(a){if(a.getAttribute('href')===p)a.classList.add('active');});})();</script>
+
+
+<div class="app-header">
+  <div class="brand-dot"></div>
+  <h1>{{BUSINESS_NAME}}</h1>
+  <span>Visitas Técnicas</span>
+</div>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showView('agenda',this)">Agenda</button>
+  <button class="tab-btn" onclick="showView('calendario',this)">Calendario</button>
+  <button class="tab-btn" onclick="showView('nueva',this)">+ Nueva visita</button>
+</div>
+
+<!-- ═══ VISTA AGENDA ═══ -->
+<div class="view active" id="view-agenda">
+
+  <div class="stats-row">
+    <div class="stat-card"><div class="stat-label">Pendientes</div><div class="stat-value yellow" id="cnt-pendiente">0</div></div>
+    <div class="stat-card"><div class="stat-label">Confirmadas</div><div class="stat-value green" id="cnt-confirmada">0</div></div>
+    <div class="stat-card"><div class="stat-label">Completadas</div><div class="stat-value teal" id="cnt-completada">0</div></div>
+    <div class="stat-card"><div class="stat-label">Canceladas</div><div class="stat-value red" id="cnt-cancelada">0</div></div>
+  </div>
+
+  <div class="filter-row">
+    <button class="filter-btn active" onclick="setFilter('todas',this)">Todas</button>
+    <button class="filter-btn" onclick="setFilter('pendiente',this)">Pendientes</button>
+    <button class="filter-btn" onclick="setFilter('confirmada',this)">Confirmadas</button>
+    <button class="filter-btn" onclick="setFilter('completada',this)">Completadas</button>
+    <button class="filter-btn" onclick="setFilter('cancelada',this)">Canceladas</button>
+  </div>
+  <div class="filter-row" style="margin-top:-10px">
+    <button class="filter-btn active" onclick="setTipoFilter('todos',this)">Todos los tipos</button>
+    <button class="filter-btn" onclick="setTipoFilter('visita',this)">🔧 Técnicas</button>
+    <button class="filter-btn" onclick="setTipoFilter('instalacion',this)">🛠 Instalaciones</button>
+  </div>
+
+  <div class="visitas-list" id="visitas-list"></div>
+</div>
+
+<!-- ═══ VISTA CALENDARIO ═══ -->
+<div class="view" id="view-calendario">
+  <div class="cal-header">
+    <button class="cal-nav" onclick="navMes(-1)">&#8592;</button>
+    <span class="cal-title" id="cal-title"></span>
+    <button class="cal-nav" onclick="navMes(1)">&#8594;</button>
+  </div>
+  <div class="cal-grid" id="cal-grid"></div>
+</div>
+
+<!-- ═══ VISTA NUEVA VISITA ═══ -->
+<div class="view" id="view-nueva">
+  <div class="card" style="max-width:700px;">
+    <div class="card-header">
+      <div class="section-title" style="margin-bottom:0">Registrar nueva visita técnica</div>
+    </div>
+    <div class="form-grid">
+      <div class="form-group">
+        <label>Cliente</label>
+        <input type="text" id="f-cliente" placeholder="Nombre completo del cliente">
+      </div>
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="text" id="f-tel" placeholder="+57 300 000 0000">
+      </div>
+      <div class="form-group">
+        <label>Tipo</label>
+        <select id="f-tipo">
+          <option value="visita">🔧 Visita técnica</option>
+          <option value="instalacion">🛠 Instalación</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Técnico</label>
+        <input type="text" list="tecnicos-list" id="f-tecnico" value="Steven" placeholder="Nombre del técnico">
+        <datalist id="tecnicos-list"></datalist>
+      </div>
+      <div class="form-group form-full">
+        <label>Dirección exacta</label>
+        <input type="text" id="f-dir" placeholder="Calle 15 # 8-23, barrio San Fernando, Cali">
+      </div>
+      <div class="form-group">
+        <label>Fecha</label>
+        <input type="date" id="f-fecha">
+      </div>
+      <div class="form-group">
+        <label>Hora</label>
+        <input type="time" id="f-hora" value="09:00">
+      </div>
+      <div class="form-group form-full">
+        <label>Notas</label>
+        <textarea id="f-notas" placeholder="Detalles del trabajo, medidas aproximadas, tipo de vidrio..."></textarea>
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;">
+      <button class="btn btn-teal" onclick="crearVisita()">Crear visita</button>
+      <button class="btn btn-outline" onclick="limpiarForm()">Limpiar</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API     = '/api';
+const MESES   = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+const MESES_C = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+const DIAS_S  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+
+let _data    = { visitas: [] };
+let _filter  = 'todas';
+let _tipoFilter = 'todos';
+let _calYear = new Date().getFullYear();
+let _calMonth= new Date().getMonth();
+const TECNICOS = ['Steven'];   // técnicos conocidos (el datalist suma los que aparezcan en datos)
+
+const TIPO_LABEL = { visita: '🔧 Visita técnica', instalacion: '🛠 Instalación' };
+function visitaTipo(v) { return v.tipo === 'instalacion' ? 'instalacion' : 'visita'; }
+
+// ── Storage ──────────────────────────────────────────────────────────────
+async function loadData() {
+  try {
+    const r = await fetch(API + '/visitas.json');
+    _data = r.ok ? await r.json() : { visitas: [] };
+  } catch { _data = { visitas: [] }; }
+}
+
+async function saveData() {
+  try {
+    await fetch(API + '/visitas.json', {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(_data),
+    });
+  } catch(e) { console.warn('API offline', e); }
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function showToast(msg, ok=true) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.style.background = ok ? 'var(--teal)' : 'var(--red)';
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function fmtFecha(iso) {
+  try {
+    const d = new Date(iso);
+    const dias  = ['domingo','lunes','martes','miércoles','jueves','viernes','sábado'];
+    return `${dias[d.getDay()]} ${d.getDate()} de ${MESES[d.getMonth()].toLowerCase()} — ${d.toTimeString().slice(0,5)}`;
+  } catch { return iso; }
+}
+
+function mapsLink(dir) {
+  return `https://maps.google.com/?q=${encodeURIComponent(dir)}`;
+}
+
+function gcalLink(visita) {
+  try {
+    const dt  = new Date(visita.fecha);
+    const end = new Date(dt.getTime() + 90*60000);
+    const fmt = d => d.toISOString().replace(/[-:]/g,'').split('.')[0]+'Z';
+    const text = encodeURIComponent(`Visita {{BUSINESS_NAME}} — ${visita.cliente}`);
+    const loc  = encodeURIComponent(visita.direccion);
+    const dates= `${fmt(dt)}/${fmt(end)}`;
+    return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${text}&dates=${dates}&location=${loc}`;
+  } catch { return '#'; }
+}
+
+function nextId() {
+  const ids = _data.visitas.map(v => v.id || 0);
+  return ids.length ? Math.max(...ids) + 1 : 1;
+}
+
+// ── Tabs ─────────────────────────────────────────────────────────────────
+function showView(name, btn) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  btn.classList.add('active');
+  if (name === 'calendario') renderCalendar();
+}
+
+// ── Agenda ────────────────────────────────────────────────────────────────
+function setFilter(f, btn) {
+  _filter = f;
+  // solo desactivar los botones de SU fila
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAgenda();
+}
+
+function setTipoFilter(f, btn) {
+  _tipoFilter = f;
+  btn.parentElement.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAgenda();
+}
+
+function renderAgenda() {
+  // stats
+  ['pendiente','confirmada','completada','cancelada'].forEach(e => {
+    document.getElementById('cnt-'+e).textContent =
+      _data.visitas.filter(v => v.estado === e).length;
+  });
+
+  let visitas = [..._data.visitas];
+  if (_filter !== 'todas')     visitas = visitas.filter(v => v.estado === _filter);
+  if (_tipoFilter !== 'todos') visitas = visitas.filter(v => visitaTipo(v) === _tipoFilter);
+  visitas.sort((a,b) => a.fecha.localeCompare(b.fecha));
+
+  const el = document.getElementById('visitas-list');
+  if (!visitas.length) {
+    el.innerHTML = '<div class="empty-note">Sin visitas para mostrar</div>';
+    return;
+  }
+
+  el.innerHTML = visitas.map(v => {
+    const dt = new Date(v.fecha);
+    const dia = dt.getDate();
+    const mes = MESES_C[dt.getMonth()].toUpperCase();
+    const hora = dt.toTimeString().slice(0,5);
+    const badgeCls = `badge badge-${v.estado}`;
+    const estadoLabel = {pendiente:'Pendiente',confirmada:'Confirmada',completada:'Completada',cancelada:'Cancelada'}[v.estado];
+    const tipo = visitaTipo(v);
+
+    const acciones = v.estado === 'pendiente' ? `
+      <button class="btn btn-sm" style="background:var(--green);color:#0f1623;" onclick="confirmarVisita(${v.id})">Confirmar</button>
+      <button class="btn btn-sm btn-outline" onclick="cancelarVisita(${v.id})">Cancelar</button>
+    ` : v.estado === 'confirmada' ? `
+      <button class="btn btn-sm btn-teal" onclick="completarVisita(${v.id})">Completar</button>
+      <button class="btn btn-sm btn-outline" onclick="cancelarVisita(${v.id})">Cancelar</button>
+    ` : '';
+    const wspBtn = (v.estado === 'pendiente' || v.estado === 'confirmada') && v.telefono
+      ? `<button class="btn btn-sm btn-outline" onclick="confirmarWhatsapp(${v.id})">📨 Confirmar por WhatsApp</button>` : '';
+
+    const tecActual = v.tecnico || '';
+    const tecOpts = [...new Set([...TECNICOS, tecActual].filter(Boolean))]
+      .map(t => `<option value="${escHtml(t)}" ${t===tecActual?'selected':''}>👷 ${escHtml(t)}</option>`).join('');
+
+    return `
+    <div class="visita-card ${v.estado}">
+      <div class="visita-fecha">
+        <div class="v-dia">${String(dia).padStart(2,'0')}</div>
+        <div class="v-mes">${mes}</div>
+        <div class="v-hora">${hora}</div>
+      </div>
+      <div class="visita-info">
+        <div class="v-cliente">${escHtml(v.cliente)}</div>
+        <div class="v-dir">📍 ${escHtml(v.direccion)}</div>
+        ${v.notas ? `<div class="v-notas">${escHtml(v.notas)}</div>` : ''}
+        <div class="v-meta">
+          <span class="badge badge-tipo-${tipo}">${TIPO_LABEL[tipo]}</span>
+          <span class="${badgeCls}">${estadoLabel}</span>
+          <a class="maps-link" href="${v.maps||mapsLink(v.direccion)}" target="_blank">🗺 Maps</a>
+          <a class="maps-link" href="${gcalLink(v)}" target="_blank">📅 Calendario</a>
+          <a class="card-link" href="clientes.html?cliente=${encodeURIComponent(v.cliente_ref||v.cliente)}" target="_blank">🔗 Ver en clientes</a>
+          <select class="tecnico-sel" onchange="setTecnico(${v.id}, this.value)">${tecOpts}</select>
+        </div>
+      </div>
+      <div class="visita-actions">${acciones}${wspBtn}</div>
+    </div>`;
+  }).join('');
+}
+
+async function confirmarWhatsapp(id) {
+  const v = _data.visitas.find(x => x.id === id);
+  if (!v) return;
+  if (!v.telefono) { showToast('Esta visita no tiene teléfono', false); return; }
+  const tipoTxt = visitaTipo(v) === 'instalacion' ? 'la instalación' : 'la visita técnica';
+  const nombre = (v.cliente || '').split(' ')[0] || v.cliente || '';
+  const msg = `Hola ${nombre}! Te confirmamos desde {{BUSINESS_NAME}} ${tipoTxt} para el ${fmtFecha(v.fecha)}. ¿Te queda bien ese día y horario? Quedamos atentos.`;
+  if (!confirm(`¿Enviar confirmación por WhatsApp a ${v.cliente} (${v.telefono})?\n\n"${msg}"`)) return;
+  showToast('Enviando…');
+  try {
+    const r = await fetch(API + '/seguimiento', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ telefono: v.telefono, mensaje: msg, cliente: v.cliente }),
+    });
+    const data = await r.json().catch(() => ({}));
+    if (!r.ok || !data.ok) { showToast('No se pudo enviar: ' + (data.error || r.status), false); return; }
+    v.confirmacion_wsp = v.confirmacion_wsp || [];
+    v.confirmacion_wsp.push(new Date().toISOString());
+    saveData();
+    showToast('Confirmación enviada por WhatsApp ✓');
+  } catch (e) { showToast('Error de conexión con ARK API', false); }
+}
+
+function setTecnico(id, val) {
+  const v = _data.visitas.find(x => x.id === id);
+  if (!v) return;
+  v.tecnico = val;
+  saveData();
+  showToast('Técnico actualizado: ' + val);
+}
+
+function escHtml(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Actions ───────────────────────────────────────────────────────────────
+function confirmarVisita(id) {
+  const v = _data.visitas.find(x => x.id === id);
+  if (!v) return;
+  v.estado = 'confirmada';
+  v.confirmada = new Date().toISOString();
+  saveData();
+  renderAgenda();
+  showToast('Visita confirmada');
+}
+
+function completarVisita(id) {
+  const v = _data.visitas.find(x => x.id === id);
+  if (!v) return;
+  v.estado = 'completada';
+  v.completada = new Date().toISOString();
+  saveData();
+  renderAgenda();
+  showToast('Visita marcada como completada');
+}
+
+function cancelarVisita(id) {
+  if (!confirm('¿Cancelar esta visita?')) return;
+  const v = _data.visitas.find(x => x.id === id);
+  if (!v) return;
+  v.estado = 'cancelada';
+  v.cancelada = new Date().toISOString();
+  saveData();
+  renderAgenda();
+  showToast('Visita cancelada', false);
+}
+
+// ── Nueva Visita ──────────────────────────────────────────────────────────
+function crearVisita() {
+  const cliente = document.getElementById('f-cliente').value.trim();
+  const tel     = document.getElementById('f-tel').value.trim();
+  const dir     = document.getElementById('f-dir').value.trim();
+  const fecha   = document.getElementById('f-fecha').value;
+  const hora    = document.getElementById('f-hora').value;
+  const notas   = document.getElementById('f-notas').value.trim();
+  const tipo    = document.getElementById('f-tipo').value;
+  const tecnico = document.getElementById('f-tecnico').value.trim() || 'Steven';
+
+  if (!cliente) { showToast('Ingresá el nombre del cliente', false); return; }
+  if (!dir)     { showToast('Ingresá la dirección', false); return; }
+  if (!fecha)   { showToast('Seleccioná una fecha', false); return; }
+
+  const fechaHora = `${fecha}T${hora}:00`;
+  const id = nextId();
+  _data.visitas.push({
+    id,
+    tipo,
+    cliente,
+    cliente_ref: cliente,
+    telefono:  tel,
+    direccion: dir,
+    maps:      mapsLink(dir),
+    fecha:     fechaHora,
+    notas,
+    estado:    'pendiente',
+    creada:    new Date().toISOString(),
+    tecnico,
+  });
+
+  saveData();
+  limpiarForm();
+  showToast(`Visita #${id} creada — pendiente confirmación de Steven`);
+  // Switch to agenda
+  document.querySelectorAll('.tab-btn')[0].click();
+}
+
+function limpiarForm() {
+  ['f-cliente','f-tel','f-dir','f-notas'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-fecha').value = '';
+  document.getElementById('f-hora').value  = '09:00';
+  document.getElementById('f-tipo').value  = 'visita';
+  document.getElementById('f-tecnico').value = 'Steven';
+}
+
+function fillTecnicosDatalist() {
+  const set = new Set(TECNICOS);
+  _data.visitas.forEach(v => { if (v.tecnico) set.add(v.tecnico); });
+  document.getElementById('tecnicos-list').innerHTML =
+    [...set].map(t => `<option value="${escHtml(t)}">`).join('');
+}
+
+// ── Calendar ──────────────────────────────────────────────────────────────
+function navMes(delta) {
+  _calMonth += delta;
+  if (_calMonth > 11) { _calMonth = 0; _calYear++; }
+  if (_calMonth < 0)  { _calMonth = 11; _calYear--; }
+  renderCalendar();
+}
+
+function renderCalendar() {
+  document.getElementById('cal-title').textContent = `${MESES[_calMonth]} ${_calYear}`;
+
+  const firstDay = new Date(_calYear, _calMonth, 1).getDay();
+  const daysInMonth = new Date(_calYear, _calMonth + 1, 0).getDate();
+  const today = new Date();
+  const todayKey = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+
+  let html = DIAS_S.map(d => `<div class="cal-dow">${d}</div>`).join('');
+
+  for (let i = 0; i < firstDay; i++) {
+    const prevD = new Date(_calYear, _calMonth, -firstDay + i + 1);
+    html += `<div class="cal-day other-month"><div class="cal-day-num">${prevD.getDate()}</div></div>`;
+  }
+
+  for (let d = 1; d <= daysInMonth; d++) {
+    const key = `${_calYear}-${String(_calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isToday = key === todayKey;
+    const dayVisits = _data.visitas.filter(v => v.fecha.startsWith(key));
+    const dots = dayVisits.map(v => `<span class="cal-dot ${v.estado}"></span>`).join('');
+    html += `
+      <div class="cal-day${isToday?' today':''}${dayVisits.length?' has-visits':''}">
+        <div class="cal-day-num">${d}</div>
+        <div>${dots}</div>
+      </div>`;
+  }
+
+  document.getElementById('cal-grid').innerHTML = html;
+}
+
+// ── Init ──────────────────────────────────────────────────────────────────
+document.getElementById('f-fecha').value = new Date().toISOString().split('T')[0];
+loadData().then(() => {
+  fillTecnicosDatalist();
+  renderAgenda();
+  renderCalendar();
+});
+</script>
+</body>
+</html>

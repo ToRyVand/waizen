@@ -1,0 +1,31 @@
+{
+  "clientes": [
+    {
+      "nombre": "CLIENTE DEMO",
+      "telefono": "3000000000",
+      "direccion": "Calle 0 # 0-0",
+      "cedula_nit": "",
+      "notas": "Registro de ejemplo",
+      "pedidos": [
+        {
+          "id": "1",
+          "descripcion": "Producto de ejemplo",
+          "items": [
+            {
+              "qty": 1,
+              "desc": "Producto de ejemplo",
+              "price": 100000
+            }
+          ],
+          "total": 100000,
+          "abono": 50000,
+          "estado": "en_fabricacion",
+          "fecha_pedido": "2026-01-01",
+          "notas": "Recibo #001"
+        }
+      ],
+      "primera_vez": "2026-01-01",
+      "ultima_vez": "2026-01-01"
+    }
+  ]
+}

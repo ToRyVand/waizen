@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BUSINESS_NAME}} — Ingreso</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#0f1623;min-height:100vh;display:flex;align-items:center;justify-content:center;color:#e2e8f0;padding:20px}
+.box{width:100%;max-width:360px;background:linear-gradient(135deg,#16213a,#1a2744);border:1px solid #233152;border-top:3px solid #00b8b0;border-radius:18px;padding:38px 30px;box-shadow:0 20px 50px #00000070}
+.brand{display:flex;align-items:center;gap:10px;justify-content:center;margin-bottom:4px}
+.dot{width:11px;height:11px;background:#00b8b0;border-radius:50%;box-shadow:0 0 12px #00b8b0}
+h1{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:#fff}
+.sub{text-align:center;color:#64748b;font-size:13px;margin-bottom:26px}
+label{font-size:12px;color:#94a3b8;display:block;margin-bottom:7px}
+input{width:100%;padding:12px 14px;background:#0d1526;border:1px solid #2a3a55;border-radius:10px;color:#fff;font-size:15px;outline:none;transition:.15s}
+input:focus{border-color:#00b8b0}
+button{width:100%;margin-top:18px;padding:12px;background:#00b8b0;color:#04141a;border:none;border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;transition:.15s}
+button:hover{background:#00d4cb}
+button:disabled{opacity:.6;cursor:default}
+.err{color:#ef4444;font-size:13px;text-align:center;margin-top:14px;min-height:18px}
+</style></head>
+<body>
+<form class="box" id="f" onsubmit="return doLogin(event)">
+  <div class="brand"><span class="dot"></span><h1>{{BUSINESS_NAME}}</h1></div>
+  <div class="sub">Panel de gestión</div>
+  <label for="pw">Clave de acceso</label>
+  <input type="password" id="pw" autocomplete="current-password" autofocus required>
+  <button type="submit" id="btn">Ingresar</button>
+  <div class="err" id="err"></div>
+</form>
+<script>
+async function doLogin(e){
+  e.preventDefault();
+  var btn=document.getElementById('btn'), err=document.getElementById('err');
+  err.textContent=''; btn.disabled=true; btn.textContent='Ingresando…';
+  try{
+    var r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:document.getElementById('pw').value})});
+    if(r.ok){ location.href='index.html'; return false; }
+    err.textContent='Clave incorrecta.';
+  }catch(ex){ err.textContent='Error de conexión.'; }
+  btn.disabled=false; btn.textContent='Ingresar';
+  return false;
+}
+</script>
+</body></html>

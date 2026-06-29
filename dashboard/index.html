@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{BUSINESS_NAME}} — Panel de Gestión</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap');
+
+  :root {
+    --teal:       #00b8b0;
+    --teal-dark:  #008a84;
+    --teal-glow:  rgba(0,184,176,0.15);
+    --green:      #22c55e;
+    --red:        #ef4444;
+    --orange:     #f59e0b;
+    --yellow:     #eab308;
+    --white:      #ffffff;
+    --muted:      #94a3b8;
+    --bg:         #0a0f1a;
+    --panel:      #111b2e;
+    --panel-hover:#162240;
+    --border:     #1e2d4a;
+    --surface:    #0d1520;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { 
+    height: 100%; 
+    font-family: 'DM Sans', sans-serif; 
+    background: var(--bg); 
+    color: var(--white); 
+    overflow: hidden;
+  }
+
+  /* ── HEADER ─────────────────────────── */
+  .app-header {
+    background: linear-gradient(135deg, #0a0f1a 0%, #111b2e 50%, #1a2744 100%);
+    border-bottom: 2px solid var(--teal);
+    padding: 12px 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+    box-shadow: 0 2px 20px rgba(0,184,176,0.08);
+  }
+  .brand-dot {
+    width: 10px; height: 10px;
+    background: var(--teal);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    flex-shrink: 0;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(0,184,176,0.4); }
+    50% { opacity: 0.7; box-shadow: 0 0 0 8px rgba(0,184,176,0); }
+  }
+  .brand-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: var(--white);
+    flex-shrink: 0;
+  }
+  .brand-text span { color: var(--teal); }
+  .brand-sub {
+    font-size: 11px;
+    color: var(--muted);
+    font-weight: 400;
+    letter-spacing: 1px;
+    margin-left: auto;
+  }
+
+  /* ── TAB NAV ────────────────────────── */
+  .tab-bar {
+    display: flex;
+    background: var(--panel);
+    border-bottom: 1px solid var(--border);
+    padding: 0 16px;
+    gap: 4px;
+    flex-shrink: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-btn {
+    padding: 12px 20px;
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .tab-btn:hover {
+    color: var(--white);
+    background: var(--panel-hover);
+  }
+  .tab-btn.active {
+    color: var(--teal);
+    border-bottom-color: var(--teal);
+    background: rgba(0,184,176,0.06);
+  }
+  .tab-btn .icon {
+    font-size: 16px;
+    line-height: 1;
+  }
+  .tab-btn .badge {
+    background: var(--teal);
+    color: var(--bg);
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 7px;
+    border-radius: 10px;
+    line-height: 16px;
+  }
+
+  /* ── IFRAME CONTENT ─────────────────── */
+  .content-area {
+    flex: 1;
+    position: relative;
+    background: var(--bg);
+  }
+  .content-area iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+  }
+
+  /* ── LAYOUT ─────────────────────────── */
+  .app-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+
+  /* ── STATUS BAR ─────────────────────── */
+  .status-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 5px 28px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    flex-shrink: 0;
+  }
+  .status-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .status-dot.online { background: var(--green); }
+  .status-dot.offline { background: var(--red); }
+
+  /* ── LOADING OVERLAY ────────────────── */
+  .loading-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg);
+    z-index: 5;
+    transition: opacity 0.3s ease;
+    gap: 16px;
+  }
+  .loading-overlay.hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .spinner {
+    width: 36px; height: 36px;
+    border: 3px solid var(--border);
+    border-top-color: var(--teal);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-text {
+    font-size: 13px;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+  }
+</style>
+</head>
+<body>
+<div class="app-layout">
+  <!-- HEADER -->
+  <header class="app-header">
+    <div class="brand-dot"></div>
+    <div class="brand-text">ARK <span>GLASS</span></div>
+    <div class="brand-sub">Panel de Gestión · Dashboard</div>
+  </header>
+
+  <!-- TABS -->
+  <nav class="tab-bar" id="tabBar">
+    <button class="tab-btn active" data-tab="cuentas" onclick="switchTab('cuentas')">
+      <span class="icon">💰</span> Estado de Cuenta
+    </button>
+    <button class="tab-btn" data-tab="facturas" onclick="switchTab('facturas')">
+      <span class="icon">📄</span> Facturas con IA
+    </button>
+    <button class="tab-btn" data-tab="clientes" onclick="switchTab('clientes')">
+      <span class="icon">👥</span> Clientes & Órdenes
+    </button>
+    <button class="tab-btn" data-tab="visitas" onclick="switchTab('visitas')">
+      <span class="icon">🔧</span> Visitas Técnicas
+    </button>
+  </nav>
+
+  <!-- CONTENT -->
+  <div class="content-area" id="contentArea">
+    <div class="loading-overlay" id="loadingOverlay">
+      <div class="spinner"></div>
+      <div class="loading-text" id="loadingText">Cargando...</div>
+    </div>
+    <iframe id="dashFrame" name="dashFrame" loading="lazy"></iframe>
+  </div>
+
+  <!-- STATUS BAR -->
+  <div class="status-bar" id="statusBar">
+    <span class="status-dot online" id="apiStatusDot"></span>
+    <span id="apiStatusText">ARK API verificando...</span>
+    <span style="margin-left:auto;font-family:'DM Mono',monospace;font-size:10px" id="versionText">v1.0</span>
+  </div>
+</div>
+
+<script>
+  const TABS = {
+    cuentas:  { file: 'cuentas.html',  label: 'Estado de Cuenta' },
+    facturas: { file: 'facturas.html', label: 'Facturas con IA' },
+    clientes: { file: 'clientes.html', label: 'Clientes & Órdenes' },
+    visitas:  { file: 'visitas.html',  label: 'Visitas Técnicas' },
+  };
+
+  let currentTab = 'cuentas';
+  const frame = document.getElementById('dashFrame');
+  const overlay = document.getElementById('loadingOverlay');
+  const loadingText = document.getElementById('loadingText');
+
+  function switchTab(tabId) {
+    if (tabId === currentTab) return;
+    currentTab = tabId;
+
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.tab === tabId);
+    });
+
+    // Show loading
+    loadingText.textContent = `Cargando ${TABS[tabId].label}...`;
+    overlay.classList.remove('hidden');
+
+    // Load iframe
+    frame.src = TABS[tabId].file;
+  }
+
+  // Hide loading when iframe loads
+  frame.addEventListener('load', () => {
+    overlay.classList.add('hidden');
+  });
+
+  // Iframe load timeout fallback
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+  }, 8000);
+
+  // API health check
+  async function checkAPI() {
+    const dot = document.getElementById('apiStatusDot');
+    const txt = document.getElementById('apiStatusText');
+    try {
+      const r = await fetch('/api/clientes.json', { method: 'HEAD', signal: AbortSignal.timeout(5000) });
+      if (r.ok) {
+        dot.className = 'status-dot online';
+        txt.textContent = 'ARK API · Online';
+      } else {
+        dot.className = 'status-dot offline';
+        txt.textContent = 'ARK API · Error ' + r.status;
+      }
+    } catch {
+      dot.className = 'status-dot offline';
+      txt.textContent = 'ARK API · Sin conexión';
+    }
+  }
+
+  checkAPI();
+  setInterval(checkAPI, 30000);
+
+  // Load initial tab
+  frame.src = TABS.cuentas.file;
+</script>
+</body>
+</html>

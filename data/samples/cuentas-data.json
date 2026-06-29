@@ -1,0 +1,18 @@
+{
+  "2026-01-01": {
+    "ingresos": [
+      {
+        "desc": "Abono ejemplo",
+        "valor": 50000,
+        "por": "Demo",
+        "hora": "10:00"
+      }
+    ],
+    "gastos": [
+      {
+        "desc": "Insumo ejemplo",
+        "valor": 20000
+      }
+    ]
+  }
+}
